@@ -1,0 +1,75 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.loading-root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #85a39c;
+    padding: 1rem;
+}
+
+.loading-spinner {
+    width: 18vw;
+    max-width: 7.5rem;
+    min-width: 3.75rem;
+    height: 18vw;
+    max-height: 7.5rem;
+    min-height: 3.75rem;
+    border: 0.625rem solid #4b6b6a;
+    border-top: 0.625rem solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 3rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 2.5rem;
+    color: #355a5b;
+    font-weight: bold;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.125rem;
+    text-align: center;
+}
+
+.loading-strawberry {
+    width: 32vw;
+    max-width: 14rem;
+    min-width: 7rem;
+    height: auto;
+    object-fit: contain;
+    margin-top: 1rem;
+    display: block;
+}
+
+@media (max-width: 600px) {
+    .loading-spinner {
+        width: 28vw;
+        height: 28vw;
+        min-width: 3rem;
+        min-height: 3rem;
+        max-width: 5rem;
+        max-height: 5rem;
+        border-width: 0.5rem;
+    }
+    .loading-text {
+        font-size: 2rem;
+    }
+    .loading-strawberry {
+        width: 48vw;
+        min-width: 5rem;
+        max-width: 10rem;
+    }
+}

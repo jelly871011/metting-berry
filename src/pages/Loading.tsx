@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import strawberry from '@/assets/images/strawberry_loading.png';
+import '@/assets/styles/Loading.css';
 
-const Loading: React.FC = () => (
-    <div style={{ textAlign: 'center', padding: '64px 0' }}>
-        <div>正在連線中...</div>
-        <div style={{ fontSize: 48 }}>🍓</div>
-    </div>
-);
+const Loading: React.FC = () => {
+    const [dotCount, setDotCount] = useState(0);
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setDotCount((prev) => (prev + 1) % 4);
+        }, 400);
+        return () => clearInterval(timer);
+    }, []);
+    return (
+        <div className="loading-root">
+            <div className="loading-spinner" />
+            <div className="loading-text">
+                正在連線中{'.'.repeat(dotCount)}
+            </div>
+            <img src={strawberry} alt="loading strawberry" className="loading-strawberry" />
+        </div>
+    );
+};
 
 export default Loading;
