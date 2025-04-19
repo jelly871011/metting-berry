@@ -16,6 +16,10 @@ html, body {
     padding: 1rem;
 }
 
+.loading-root.fade-out {
+    animation: loading-fadeout 0.7s forwards;
+}
+
 .loading-spinner {
     width: 18vw;
     max-width: 7.5rem;
@@ -33,6 +37,16 @@ html, body {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@keyframes loading-fadeout {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        pointer-events: none;
+    }
 }
 
 .loading-text {
