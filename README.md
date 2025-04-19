@@ -38,7 +38,7 @@
 │   ├── layouts/             # 共用佈局（LoadingLayout、MeetingLayout）
 │   ├── pages/               # 主頁面
 │   │   ├── Loading.tsx      # 開場畫面
-│   │   ├── Main.tsx         # 主畫面
+│   │   ├── Home.tsx         # 主畫面
 │   │   ├── Meeting.tsx      # 會議模擬畫面
 │   │   ├── Report.tsx       # 報告卡頁面
 │   │   ├── Title.tsx        # 我的稱號頁面
@@ -56,7 +56,7 @@
 ### 2. 核心模組說明
 1. **Loading 模組**  
    - 進場動畫、loading 畫面  
-2. **Main Page**
+2. **Home Page**
    - 登入畫面，顯示草莓趴鍵盤
    - 按「開始上線」、「趕快上線」進入會議
    - 按「我的稱號」進入稱號頁面
@@ -84,7 +84,7 @@
 
 ### 3. 互動流程大綱
 ```plaintext
-1. 進場 Loading → Main Page
+1. 進場 Loading → Home Page
 2. 點「開始上線」 → 進入會議模擬畫面
 3. 主管觸發對話 → 底部對話框＋四選一  
    ├─ A: Trello 回應 → 4 分支劇情
@@ -93,11 +93,11 @@
    └─ D: 假裝當機 → 單一結局
 4. 分支結局 → 顯示系統訊息、稱號、數值變動
 5. 報告卡頁面 → 顯示理智值/裝忙指數/壓力值/稱號
-6. 返回主畫面（Main Page）
+6. 返回主畫面（Home Page）
 7. 點「我的稱號」 → Title Page
 8. 點「設定」 → Setting Page
 9. 點「報告卡」 → Report Page
-10. 點「返回主畫面」 → Main Page
+10. 點「返回主畫面」 → Home Page
 ```
 
 ⸻
