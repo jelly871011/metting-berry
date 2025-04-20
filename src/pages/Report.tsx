@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import report_strawberry_1 from '@/assets/images/report_strawberry_1.png';
 import '@/assets/styles/Report.css';
+import ContinueBusyButton from '../components/ContinueBusyButton';
 
 const Report: React.FC = () => {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const Report: React.FC = () => {
                     稱號：辦公室幽靈莓
                 </span>
             </div>
-            <button className="report-btn" onClick={() => navigate('/home')}>繼續裝忙</button>
+            <ContinueBusyButton />
         </div>
     );
 };

@@ -31,7 +31,7 @@ const Home: React.FC = () => {
                             <button className="drawer-close-btn" onClick={() => setDrawerOpen(false)}><FaTimes /></button>
                             <div className="drawer-bar-btns">
                                 <button className="home-bar-btn"><FaCog className="home-bar-icon" />設定</button>
-                                <button className="home-bar-btn"><FaStar className="home-bar-icon" />我的稱號</button>
+                                <button className="home-bar-btn" onClick={() => navigate('/title')}><FaStar className="home-bar-icon" />我的稱號</button>
                                 <button className="home-bar-btn" onClick={() => navigate('/report')}><FaRegListAlt className="home-bar-icon" />報告卡</button>
                             </div>
                         </div>

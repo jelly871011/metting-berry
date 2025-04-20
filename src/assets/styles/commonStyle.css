@@ -1,0 +1,25 @@
+.continue-busy-btn {
+    display: block;
+    background: #c76542;
+    color: #fffbe9;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 0.9rem;
+    border: none;
+    padding: 0.7rem 2.6rem;
+    box-shadow: 0 0.1rem 0.4rem #23434211;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+}
+.continue-busy-btn:hover {
+    background: #b85a33;
+    color: #fffbe9;
+}
+
+@media (max-width: 600px) {
+    .continue-busy-btn {
+        font-size: 1.2rem;
+        padding: 0.5rem 1.2rem;
+    }
+}
