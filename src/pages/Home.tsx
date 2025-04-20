@@ -4,7 +4,7 @@ import strawberry from '@/assets/images/home_strawberry.png';
 import '@/assets/styles/Home.css';
 import { FaCog, FaStar, FaRegListAlt, FaBars, FaTimes } from 'react-icons/fa';
 
-const Home = () => {
+const Home: React.FC = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const navigate = useNavigate();
     return (
@@ -32,7 +32,7 @@ const Home = () => {
                             <div className="drawer-bar-btns">
                                 <button className="home-bar-btn"><FaCog className="home-bar-icon" />設定</button>
                                 <button className="home-bar-btn"><FaStar className="home-bar-icon" />我的稱號</button>
-                                <button className="home-bar-btn"><FaRegListAlt className="home-bar-icon" />報告卡</button>
+                                <button className="home-bar-btn" onClick={() => navigate('/report')}><FaRegListAlt className="home-bar-icon" />報告卡</button>
                             </div>
                         </div>
                     </>
