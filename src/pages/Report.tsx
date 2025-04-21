@@ -2,15 +2,15 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import report_strawberry_1 from '@/assets/images/report_strawberry_1.png';
 import '@/assets/styles/Report.css';
-import ContinueBusyButton from '../components/ContinueBusyButton';
+import Container from '../components/Container';
+import Footer from '../components/Footer';
+import Card from '../components/Card';
 
 const Report: React.FC = () => {
     const navigate = useNavigate();
     return (
-        <div className="report-container">
-            <div className="report-card">
-                <span className="report-title">摸魚報告卡</span>
-                <div className="report-divider" />
+        <Container>
+            <Card type="report" title="摸魚報告卡">
                 <img src={report_strawberry_1} alt="report strawberry" className="report-strawberry" />
                 <div className="report-stats">
                     <span className="report-stat">理智值：-10</span>
@@ -20,9 +20,9 @@ const Report: React.FC = () => {
                 <span className="report-title-badge">
                     稱號：辦公室幽靈莓
                 </span>
-            </div>
-            <ContinueBusyButton />
-        </div>
+            </Card>
+            <Footer />
+        </Container>
     );
 };
 

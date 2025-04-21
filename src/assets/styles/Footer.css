@@ -1,0 +1,21 @@
+.footer {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    bottom: 2.4rem;
+    z-index: 10;
+    background: transparent;
+    pointer-events: none;
+}
+.footer > * {
+    pointer-events: auto;
+}
+
+@media (max-width: 600px) {
+    .footer {
+        bottom: 1.2rem;
+    }
+}

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import '@/assets/styles/Setting.css';
 import { FaMusic, FaVolumeUp, FaCommentDots, FaBookOpen, FaEnvelope, FaInfoCircle } from 'react-icons/fa';
-import ContinueBusyButton from '../components/ContinueBusyButton';
+import Container from '../components/Container';
+import Footer from '../components/Footer';
+import Card from '../components/Card';
 
 const Setting: React.FC = () => {
     const [musicOn, setMusicOn] = useState(true);
@@ -14,13 +16,12 @@ const Setting: React.FC = () => {
     const onInfoClick = () => alert('版本資訊');
 
     return (
-        <div className="setting-container">
-            <div className="setting-card">
-                <div className="setting-title">設定</div>
-                <div className="setting-divider" />
+        <Container>
+            <Card type="setting" title="設定">
                 <div className="setting-list">
                     <div className="setting-list-item">
-                        <FaMusic className="setting-icon" /> 音樂
+                        <FaMusic className="setting-icon" />
+                        <span>背景音樂</span>
                         <div className="setting-switch">
                             <div
                                 className={`setting-square-toggle${musicOn ? ' selected' : ''}`}
@@ -31,7 +32,8 @@ const Setting: React.FC = () => {
                         </div>
                     </div>
                     <div className="setting-list-item">
-                        <FaVolumeUp className="setting-icon" /> 音效
+                        <FaVolumeUp className="setting-icon" />
+                        <span>音效</span>
                         <div className="setting-switch">
                             <div
                                 className={`setting-square-toggle${soundOn ? ' selected' : ''}`}
@@ -42,7 +44,8 @@ const Setting: React.FC = () => {
                         </div>
                     </div>
                     <div className="setting-list-item">
-                        <FaCommentDots className="setting-icon" /> 提示文字
+                        <FaCommentDots className="setting-icon" />
+                        <span>提示</span>
                         <div className="setting-switch">
                             <div
                                 className={`setting-square-toggle${hintOn ? ' selected' : ''}`}
@@ -53,34 +56,33 @@ const Setting: React.FC = () => {
                         </div>
                     </div>
                     <div className="setting-list-item">
-                        <span className="setting-icon" style={{fontSize: '2rem'}}>語</span> 語言
+                        <span className="setting-icon" style={{fontSize: '2rem'}}>語</span>
+                        <span>語言</span>
                         <div className="setting-switch">
                             <div
                                 className={`setting-square-toggle${lang === 'en' ? ' selected' : ''}`}
                                 onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
                             >
-                                {lang === 'en' ? 'EN' : '中'}
+                                {lang === 'zh' ? '中文' : 'EN'}
                             </div>
                         </div>
                     </div>
                     <div className="setting-list-item">
                         <FaBookOpen className="setting-icon" />
-                        <button className="setting-list-btn" onClick={e => { onTutorialClick(); (e.currentTarget as HTMLButtonElement).blur(); }}>操作教學</button>
+                        <button className="setting-list-btn" onClick={onTutorialClick}>操作教學</button>
                     </div>
                     <div className="setting-list-item">
                         <FaEnvelope className="setting-icon" />
-                        <button className="setting-list-btn" onClick={e => { onContactClick(); (e.currentTarget as HTMLButtonElement).blur(); }}>聯絡作者</button>
+                        <button className="setting-list-btn" onClick={onContactClick}>聯絡作者</button>
                     </div>
                     <div className="setting-list-item">
                         <FaInfoCircle className="setting-icon" />
                         <button className="setting-list-btn" onClick={e => { onInfoClick(); (e.currentTarget as HTMLButtonElement).blur(); }}>版本資訊</button>
                     </div>
                 </div>
-            </div>
-            <div className="setting-bottom">
-                <ContinueBusyButton />
-            </div>
-        </div>
+            </Card>
+            <Footer />
+        </Container>
     );
 };
 

@@ -1,102 +1,39 @@
-.report-container {
-  min-height: 100vh;
-  width: 100vw;
-  background: #8ab6b6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 8%;
-}
-
-.report-card {
-  background: #fbe6c2;
-  border: 0.22rem solid #234342;
-  border-radius: 1.2rem;
-  width: 20vw;
-  margin: 0 auto 1.8rem auto;
-  box-shadow: 0 0.16rem 0.8rem #23434222;
-  padding: 1.4rem 1.2rem 1.6rem 1.2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.report-title {
-  font-size: 2.4rem;
-  font-weight: bold;
-  color: #234342;
-  text-align: center;
-  letter-spacing: 0.08em;
-}
-
-.report-divider {
-  width: 90%;
-  height: 0.22rem;
-  background: #234342;
-  border-radius: 0.12rem;
-  margin: 0.7rem 0 1.1rem 0;
-}
-
 .report-strawberry {
-  width: 14rem;
-  max-width: 80vw;
-  display: block;
-  margin: 0 auto 1.2rem auto;
+    width: 14rem;
+    max-width: 80vw;
+    display: block;
+    margin: 0 auto 1.2rem auto;
 }
 
 .report-stats {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .report-stat {
-  font-size: 1.5rem;
-  color: #234342;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  text-align: center;
+    font-size: 1.5rem;
+    color: #234342;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .report-title-badge {
-  background: #234342;
-  color: #fffbe9;
-  font-size: 1.25rem;
-  font-weight: bold;
-  border-radius: 0.7rem;
-  padding: 0.5rem 1.2rem;
-  margin-top: 0.6rem;
-  letter-spacing: 0.06em;
-  box-shadow: 0 0.08rem 0.3rem #23434222;
-}
-
-.report-btn {
-  display: block;
-  background: #c76542;
-  color: #fffbe9;
-  font-size: 1.5rem;
-  font-weight: bold;
-  border-radius: 0.9rem;
-  border: none;
-  padding: 0.7rem 2.6rem;
-  box-shadow: 0 0.1rem 0.4rem #23434211;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s;
-}
-.report-btn:hover {
-  background: #b85a33;
-  color: #fff;
+    background: #234342;
+    color: #fffbe9;
+    font-size: 1.25rem;
+    font-weight: bold;
+    border-radius: 0.7rem;
+    padding: 0.5rem 1.2rem;
+    margin-top: 0.6rem;
+    letter-spacing: 0.06em;
+    box-shadow: 0 0.08rem 0.3rem #23434222;
 }
 
 @media (max-width: 600px) {
-  .report-card {
-    width: 80vw;
-    padding: 1.1rem 0.4rem 1.2rem 0.4rem;
-  }
-  .report-strawberry {
-    width: 50vw;
-  }
+    .report-strawberry {
+        width: 50vw;
+    }
 }

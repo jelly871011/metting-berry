@@ -1,0 +1,16 @@
+.container {
+    min-height: 100vh;
+    width: 100vw;
+    background: #8ab6b6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 5%;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding-top: 10%;
+    }
+}

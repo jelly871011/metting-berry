@@ -1,0 +1,49 @@
+.card {
+    background: #fbe6c2;
+    border: 0.22rem solid #234342;
+    border-radius: 1.2rem;
+    margin: 0 auto 1.8rem auto;
+    box-shadow: 0 0.16rem 0.8rem #23434222;
+    padding: 1.4rem 1.2rem 1.6rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 18rem;
+    max-width: 27rem;
+    width: 20vw;
+    min-height: 60vh;
+}
+
+.card-title {
+    font-size: 2.5rem;
+    color: #234342;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.1rem;
+    text-align: center;
+}
+
+.card-divider {
+    width: 90%;
+    height: 0.22rem;
+    background: #234342;
+    border-radius: 0.1rem;
+    margin: 0 auto 1.2rem auto;
+}
+
+@media (max-width: 600px) {
+    .card {
+        width: 70vw;
+        min-width: unset;
+        max-width: 100vw;
+        padding: 1.1rem 0.4rem 1.2rem 0.4rem;
+    }
+    .card-title {
+        font-size: 2rem;
+        margin-bottom: 0.7rem;
+    }
+    .card-divider {
+        width: 90%;
+        margin-bottom: 0.8rem;
+    }
+}

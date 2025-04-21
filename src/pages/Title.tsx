@@ -1,14 +1,14 @@
 import React from 'react';
 import '@/assets/styles/Title.css';
 import title_1 from '@/assets/images/title_1.png';
-import ContinueBusyButton from '@/components/ContinueBusyButton';
+import Container from '../components/Container';
+import Footer from '../components/Footer';
+import Card from '../components/Card';
 
 const Title: React.FC = () => {
     return (
-        <div className="title-container">
-            <div className="title-card">
-                <span className="title-title">我的稱號</span>
-                <div className="title-divider" />
+        <Container>
+            <Card type="title" title="我的稱號">
                 <div className="title-list">
                     <div className="title-list-item">
                         <span className="title-icon-box">
@@ -29,9 +29,9 @@ const Title: React.FC = () => {
                         <span className="title-list-text">...</span>
                     </div>
                 </div>
-            </div>
-            <ContinueBusyButton />
-        </div>
+            </Card>
+            <Footer />
+        </Container>
     );
 };
 
