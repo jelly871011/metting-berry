@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 import '@/assets/styles/Report.css';
 import Container from '../components/Container';
 import Footer from '../components/Footer';
@@ -37,27 +39,46 @@ const titleImgMap: Record<string, string | undefined> = {
 
 const Report: React.FC = () => {
     const navigate = useNavigate();
-    const [report, setReport] = useState({
-      title: '',
-      busy: 0,
-      sanity: 0,
-      stress: 0,
-    });
+    const [report, setReport] = useState<any>(null);
 
     useEffect(() => {
+      // 只在從 Meeting 頁面跳轉時才 prompt 名稱、寫入排行榜
+      const fromMeeting = sessionStorage.getItem('fromMeeting') === '1';
+      sessionStorage.removeItem('fromMeeting');
+
       const last = localStorage.getItem('lastReport');
       if (last) {
-        setReport(JSON.parse(last));
+        let playerName = localStorage.getItem('playerName') || '';
+        if (fromMeeting) {
+          playerName = window.prompt('請輸入你的暱稱：', playerName) || '匿名莓';
+          localStorage.setItem('playerName', playerName);
+        }
         try {
-          const records = JSON.parse(localStorage.getItem('meetingRecords') || '[]');
           const parsed = JSON.parse(last);
           const totalScore = parsed.sanity + parsed.busy - parsed.stress;
-          const current = { ...parsed, date: new Date().toISOString(), totalScore };
-          records.push(current);
-          localStorage.setItem('meetingRecords', JSON.stringify(records));
-        } catch {}
+          // 只有從 Meeting 跳轉才會 push 到排行榜
+          if (fromMeeting) {
+            const records = JSON.parse(localStorage.getItem('meetingRecords') || '[]');
+            const current = { ...parsed, playerName, date: new Date().toISOString(), totalScore, id: Date.now() };
+            records.push(current);
+            localStorage.setItem('meetingRecords', JSON.stringify(records));
+            // 上傳到 Firebase
+            addDoc(collection(db, 'leaderboard'), current);
+            setReport({ ...parsed, playerName, totalScore });
+          } else {
+            setReport({ ...parsed, playerName, totalScore });
+          }
+        } catch {
+          setReport(null);
+        }
+      } else {
+        setReport(null);
       }
     }, []);
+
+    if (!report) {
+      return <div style={{textAlign:'center',marginTop:'4rem',fontSize:'1.2rem'}}>載入中...</div>;
+    }
 
     const reportImg = titleImgMap[report.title];
 

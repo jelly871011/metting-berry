@@ -4,7 +4,7 @@ import Loading from './pages/Loading';
 import Home from './pages/Home';
 import Meeting from './pages/Meeting';
 import Report from './pages/Report';
-import Title from './pages/Title';
+import Leaderboard from './pages/Leaderboard';
 import Setting from './pages/Setting';
 
 const App: React.FC = () => (
@@ -14,7 +14,7 @@ const App: React.FC = () => (
 			<Route path="/home" element={<Home />} />
 			<Route path="/meeting" element={<Meeting />} />
 			<Route path="/report" element={<Report />} />
-			<Route path="/title" element={<Title />} />
+			<Route path="/leaderboard" element={<Leaderboard />} />
 			<Route path="/setting" element={<Setting />} />
 		</Routes>
 	</BrowserRouter>

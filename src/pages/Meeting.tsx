@@ -93,7 +93,7 @@ const Meeting: React.FC = () => {
     useEffect(() => {
       if (showEndCall) {
         setTimeout(() => {
-          window.location.href = '/report';
+          goToReport();
         }, 2500);
       }
     }, [showEndCall]);
@@ -171,6 +171,11 @@ const Meeting: React.FC = () => {
       (currentScriptKey === 'opening' && dialog[dialogIndex]?.speaker === 'coworkerB' && dialog[dialogIndex]?.text.includes('鏡頭壞掉')) ||
       (currentScriptKey === 'opening2' && !showCameraBack)
     );
+
+    const goToReport = () => {
+      sessionStorage.setItem('fromMeeting', '1');
+      window.location.href = '/report';
+    };
 
     return (
         <div className="meeting-container">
