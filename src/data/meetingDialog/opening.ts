@@ -1,8 +1,9 @@
 // 會議開場腳本
 export const meetingDialogOpening = [
-  { text: "你打開了視訊會議連結" },
-  { text: "同事們陸續加入會議" },
-  { text: "主管已經在會議室" },
+  { text: "(打開了視訊會議連結)" },
+  { speaker: 'coworkerA', text: "聲音有聽到嗎？" },
+  { speaker: 'coworkerB',text: "等一下，我的鏡頭壞掉了" },
+  { text: "(主管已經在會議室，表情嚴肅)" },
 ];
 
 export const meetingDialogOpening2 = [
