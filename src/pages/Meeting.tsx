@@ -36,10 +36,21 @@ function weightedRandom(min: number, max: number, weights: number[]) {
 }
 
 function generateMeetingStats(title?: string) {
-  const sanityWeights = [8, 2, 1, 2, 8];
-  const busyWeights = [4, 1, 10, 1, 4];
+  // 根據腳本設計，理智值偏低、壓力值偏低、裝忙偏高
+  // 權重設計（0~99）：
+  // sanity: 低機率高分，高機率低分
+  // busy: 高機率高分
+  // stress: 低機率高分
+
+  // 理智值權重（低分多，高分少）
+  const sanityWeights = [10, 8, 4, 2, 1]; // 0~19, 20~39, 40~59, 60~79, 80~99
+  // 裝忙權重（高分多，低分少）
+  const busyWeights = [1, 2, 4, 8, 10];   // 0~19, 20~39, 40~59, 60~79, 80~99
+  // 壓力值權重（低分多，高分少）
+  const stressWeights = [10, 8, 4, 2, 1];
+
   const easyTitles = ['消失的草莓', '隱身聆聽莓', '夢遊莓', '臨陣脫逃莓'];
-  let stress = weightedRandom(-50, 99, [8,2,1,2,8]);
+  let stress = weightedRandom(-50, 99, stressWeights);
   if (title && easyTitles.includes(title)) {
     stress = weightedRandom(-50, -1, [4, 6, 8, 10, 12, 10, 8, 6, 4]);
   }
@@ -50,7 +61,11 @@ function generateMeetingStats(title?: string) {
   };
 }
 
-const Meeting: React.FC = () => {
+interface MeetingProps {
+  hintOn: boolean;
+}
+
+const Meeting: React.FC<MeetingProps> = ({ hintOn }) => {
     const [currentScriptKey, setCurrentScriptKey] = useState('opening');
     const meetingScriptsMapExt = { ...meetingScriptsMap, resultHangup };
     const currentScript = meetingScriptsMapExt[currentScriptKey];
@@ -197,6 +212,8 @@ const Meeting: React.FC = () => {
 
     const isAnswerOption = currentScript === answerOptions1 || currentScript === answerOptionsA || currentScript === answerOptionsB || currentScript === answerOptionsC;
 
+    const isBracketOption = (text: string) => /^（.*）$/.test(text.trim());
+
     // 渲染對話內容時，僅渲染動畫累積的 dialog
     const displayDialog = isAnswerOption
       ? []
@@ -212,9 +229,22 @@ const Meeting: React.FC = () => {
       window.location.href = '/report';
     };
 
+    // 禁止返回上一頁
+    useEffect(() => {
+      const handlePopState = (e: PopStateEvent) => {
+        window.history.pushState(null, '', window.location.href);
+        alert('會議進行中，不能回上一頁！');
+      };
+      window.history.pushState(null, '', window.location.href);
+      window.addEventListener('popstate', handlePopState);
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+      };
+    }, []);
+
     return (
         <div className="meeting-container">
-          {systemMsg && (
+          {hintOn && systemMsg && (
             <div className="system-error-toast">{systemMsg}</div>
           )}
           {showEndCall && (
@@ -246,7 +276,8 @@ const Meeting: React.FC = () => {
                               key={idx}
                               onClick={() => {
                                 const isOptionD = opt.next === 'resultD';
-                                if (!micOn && !isOptionD) {
+                                // 新增：如果是（）開頭結尾的選項，不需檢查 micOn
+                                if (!micOn && !isOptionD && !isBracketOption(opt.text)) {
                                   setSystemMsg('發言前要開啟麥克風');
                                   setTimeout(() => setSystemMsg(null), 2000);
                                   return;

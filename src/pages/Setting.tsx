@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '@/assets/styles/Setting.css';
 import { FaMusic, FaVolumeUp, FaCommentDots, FaBookOpen, FaEnvelope, FaInfoCircle } from 'react-icons/fa';
 import Container from '../components/Container';
@@ -6,10 +6,15 @@ import Footer from '../components/Footer';
 import Card from '../components/Card';
 import { VERSION } from '../version';
 
-const Setting: React.FC = () => {
+// props: 由父層傳入 hintOn, setHintOn
+interface SettingProps {
+  hintOn: boolean;
+  setHintOn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Setting: React.FC<SettingProps> = ({ hintOn, setHintOn }) => {
     const [musicOn, setMusicOn] = useState(true);
     const [soundOn, setSoundOn] = useState(true);
-    const [hintOn, setHintOn] = useState(true);
     const [lang, setLang] = useState<'zh' | 'en'>('zh');
 
     // 兩句話輪流顯示
@@ -24,6 +29,9 @@ const Setting: React.FC = () => {
     };
     const onContactClick = () => alert('作者夢遊中，請稍後再撥 💤');
     const onInfoClick = () => alert(`目前版本：${VERSION}\n不知道會不會有第二版\n有 bug 純屬正常，請享受 XD`);
+
+    // 切換提示開關時，只用 props 的 setHintOn
+    const onHintToggle = () => setHintOn(v => !v);
 
     return (
         <Container>
@@ -59,7 +67,7 @@ const Setting: React.FC = () => {
                         <div className="setting-switch">
                             <div
                                 className={`setting-square-toggle${hintOn ? ' selected' : ''}`}
-                                onClick={() => setHintOn(!hintOn)}
+                                onClick={onHintToggle}
                             >
                                 {hintOn ? '開' : '關'}
                             </div>
