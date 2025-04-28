@@ -69,6 +69,7 @@
   background: none;
   min-height: 4.5rem;
   padding-bottom: 0.5rem;
+  min-width: 0;
 }
 .ranking-list-item:last-child {
   border-bottom: none;
@@ -86,6 +87,13 @@
   font-weight: bold;
   font-size: 1rem;
   justify-self: center;
+  max-width: 7.5rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  width: 100%;
 }
 .ranking-score-main {
   font-size: 1.1rem;
@@ -119,12 +127,14 @@
     min-height: 4.2rem;
     gap: 0.5rem;
     padding-bottom: 0.8rem;
+    min-width: 0;
   }
   .ranking-index {
     font-size: 1.1rem;
   }
   .ranking-player {
-    font-size: 1rem;
+    max-width: 5.2rem;
+    min-width: 0;
   }
   .ranking-score-main {
     font-size: 1.15rem;

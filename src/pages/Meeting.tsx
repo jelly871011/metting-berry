@@ -16,6 +16,40 @@ const avatarMap: Record<string, string> = {
   coworkerB: male,
 };
 
+function weightedRandom(min: number, max: number, weights: number[]) {
+  const steps = weights.length - 1;
+  const stepSize = (max - min) / steps;
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < weights.length; i++) {
+    if (r < weights[i]) {
+      const base = min + i * stepSize;
+      let val = base + Math.random() * stepSize;
+      val = Math.round(val);
+      if (val > 99) val = 99;
+      if (val < -99) val = -99;
+      return val;
+    }
+    r -= weights[i];
+  }
+  return Math.max(Math.min(max, 99), -99);
+}
+
+function generateMeetingStats(title?: string) {
+  const sanityWeights = [8, 2, 1, 2, 8];
+  const busyWeights = [4, 1, 10, 1, 4];
+  const easyTitles = ['消失的草莓', '隱身聆聽莓', '夢遊莓', '臨陣脫逃莓'];
+  let stress = weightedRandom(-50, 99, [8,2,1,2,8]);
+  if (title && easyTitles.includes(title)) {
+    stress = weightedRandom(-50, -1, [4, 6, 8, 10, 12, 10, 8, 6, 4]);
+  }
+  return {
+    sanity: weightedRandom(-50, 99, sanityWeights),
+    busy:   weightedRandom(-30, 99, busyWeights),
+    stress,
+  };
+}
+
 const Meeting: React.FC = () => {
     const [currentScriptKey, setCurrentScriptKey] = useState('opening');
     const meetingScriptsMapExt = { ...meetingScriptsMap, resultHangup };
@@ -119,11 +153,12 @@ const Meeting: React.FC = () => {
             setTimeout(() => setShowEndCall(true), 2000);
           }
           // 寫入 localStorage，供報告卡頁使用
+          const stats = generateMeetingStats(result.title);
           localStorage.setItem('lastReport', JSON.stringify({
             title: result.title || '',
-            busy: result.busy || 0,
-            sanity: result.sanity || 0,
-            stress: result.stress || 0,
+            busy: stats.busy,
+            sanity: stats.sanity,
+            stress: stats.stress,
             skills: result.skills || [],
           }));
           // 取得結局時自動加入稱號

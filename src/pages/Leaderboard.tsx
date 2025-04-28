@@ -52,7 +52,7 @@ const Leaderboard: React.FC = () => {
           {records.slice(0, 30).map((rec, idx) => (
             <div className="ranking-list-item" key={rec.id || idx}>
               <span className="ranking-index">{idx + 1}</span>
-              <span className="ranking-player">{rec.playerName || '匿名莓'}</span>
+              <span className="ranking-player" title={rec.playerName || '匿名莓'}>{rec.playerName || '匿名莓'}</span>
               <span className="ranking-score-main">{rec.totalScore}</span>
               <div className="ranking-detail">
                 <div>理智：{rec.sanity}</div>
