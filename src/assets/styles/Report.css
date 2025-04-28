@@ -1,8 +1,11 @@
 .report-strawberry {
-    width: 14rem;
-    max-width: 80vw;
+    width: 13rem;
+    height: 13rem;
+    object-fit: contain;
     display: block;
-    margin: 0 auto 1.2rem auto;
+    margin: 0 auto 1rem auto;
+    max-width: 100%;
+    max-height: 40vw;
 }
 
 .report-stats {
@@ -33,7 +36,7 @@
 }
 
 @media (max-width: 600px) {
-    .report-strawberry {
+    /* .report-strawberry {
         width: 50vw;
-    }
+    } */
 }

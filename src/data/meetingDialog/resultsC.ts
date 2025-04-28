@@ -48,7 +48,7 @@ export const resultC4 = {
   systemMsg: '你假裝聽會議，卻被系統發現。',
   dialog: [
     { speaker: 'strawberry', text: '（假裝很專心）' },
-    { speaker: 'system', text: '系統偵測到你未參與會議，請專心！' },
+    { text: '系統偵測到你未參與會議，請專心！' },
     { speaker: 'strawberry', text: '（嚇到回神）' }
   ],
   busy: 0,

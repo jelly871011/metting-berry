@@ -26,7 +26,7 @@ export const resultA2 = {
 export const resultA3 = {
   dialog: [
     { speaker: 'boss', text: "……那同事A你先說。" },
-    { speaker: 'coworkerA', text: "（感謝救援！）" },
+    { speaker: 'coworkerA', text: "（都是你啦！）" },
   ],
   systemMsg: "成功轉移焦點",
   title: "焦點轉移達人",
