@@ -4,6 +4,7 @@ import { FaMusic, FaVolumeUp, FaCommentDots, FaBookOpen, FaEnvelope, FaInfoCircl
 import Container from '../components/Container';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
+import { VERSION } from '../version';
 
 const Setting: React.FC = () => {
     const [musicOn, setMusicOn] = useState(true);
@@ -11,9 +12,18 @@ const Setting: React.FC = () => {
     const [hintOn, setHintOn] = useState(true);
     const [lang, setLang] = useState<'zh' | 'en'>('zh');
 
-    const onTutorialClick = () => alert('操作教學');
-    const onContactClick = () => alert('聯絡作者');
-    const onInfoClick = () => alert('版本資訊');
+    // 兩句話輪流顯示
+    const tutorialMsgs = [
+      '作者懶得打，自己研究好不好 😎',
+      '這麼簡單的遊戲，也需要教學？🤔'
+    ];
+    const [msgIdx, setMsgIdx] = useState(0);
+    const onTutorialClick = () => {
+      alert(tutorialMsgs[msgIdx]);
+      setMsgIdx((msgIdx + 1) % tutorialMsgs.length);
+    };
+    const onContactClick = () => alert('作者夢遊中，請稍後再撥 💤');
+    const onInfoClick = () => alert(`目前版本：${VERSION}\n不知道會不會有第二版\n有 bug 純屬正常，請享受 XD`);
 
     return (
         <Container>
@@ -61,7 +71,8 @@ const Setting: React.FC = () => {
                         <div className="setting-switch">
                             <div
                                 className={`setting-square-toggle${lang === 'en' ? ' selected' : ''}`}
-                                onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
+                                style={{ opacity: 1, cursor: 'pointer' }}
+                                onClick={() => alert('要切語言請抖內，感恩！')}
                             >
                                 {lang === 'zh' ? '中文' : 'EN'}
                             </div>
