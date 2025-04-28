@@ -20,6 +20,13 @@ const Meeting: React.FC = () => {
     const [dialog, setDialog] = useState<{speaker?: string, text: string}[]>([]);
     const [showEndCall, setShowEndCall] = useState(false);
     const [systemMsg, setSystemMsg] = useState<string | null>(null);
+    const [titles, setTitles] = useState<string[]>(() => {
+      try {
+        return JSON.parse(localStorage.getItem('myTitles') || '[]');
+      } catch {
+        return [];
+      }
+    });
 
     useEffect(() => {
         if (!currentScript.length) return;
@@ -108,6 +115,17 @@ const Meeting: React.FC = () => {
             stress: result.stress || 0,
             skills: result.skills || [],
           }));
+          // 取得結局時自動加入稱號
+          if (result.title) {
+            setTitles(prev => {
+              if (!prev.includes(result.title)) {
+                const next = [...prev, result.title];
+                localStorage.setItem('myTitles', JSON.stringify(next));
+                return next;
+              }
+              return prev;
+            });
+          }
         }
       }
     }, [currentScriptKey]);
