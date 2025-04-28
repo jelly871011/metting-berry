@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -40,6 +40,33 @@ const titleImgMap: Record<string, string | undefined> = {
 const Report: React.FC = () => {
     const navigate = useNavigate();
     const [report, setReport] = useState<any>(null);
+    const [showHint, setShowHint] = useState(false);
+    const [hintMsg, setHintMsg] = useState('');
+    const imgRef = useRef<HTMLImageElement>(null);
+    // 彩蛋提示內容
+    const hintList = [
+      '摸魚有理，裝忙無罪！',
+      '下次會議記得帶草莓牛奶～',
+      '你已經是傳奇莓了！',
+      '據說連主管都在偷玩這個遊戲…',
+      '摸魚摸到升天！',
+      '理智值爆表，恭喜！',
+      '壓力太大，記得多休息！',
+      '有沒有發現這裡有彩蛋？',
+    ];
+    // 點擊角色時觸發動畫與彩蛋
+    const handleImgClick = () => {
+      if (imgRef.current) {
+        imgRef.current.classList.add('strawberry-animate');
+        setTimeout(() => {
+          imgRef.current && imgRef.current.classList.remove('strawberry-animate');
+        }, 600);
+      }
+      // 顯示隨機提示
+      setHintMsg(hintList[Math.floor(Math.random()*hintList.length)]);
+      setShowHint(true);
+      setTimeout(() => setShowHint(false), 2000);
+    };
 
     useEffect(() => {
       // 只在從 Meeting 頁面跳轉時才 prompt 名稱、寫入排行榜
@@ -85,10 +112,20 @@ const Report: React.FC = () => {
     return (
         <Container>
             <Card type="report" title="摸魚報告卡">
-                <div style={{width:'13rem',height:'13rem',margin:'0 auto 1rem auto',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <div style={{width:'13rem',height:'13rem',margin:'0 auto 1rem auto',display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
                   {reportImg ? (
-                    <img src={reportImg} alt="report strawberry" className="report-strawberry" />
+                    <img
+                      ref={imgRef}
+                      src={reportImg}
+                      alt="report strawberry"
+                      className="report-strawberry"
+                      style={{cursor:'pointer'}}
+                      onClick={handleImgClick}
+                    />
                   ) : null}
+                  {showHint && (
+                    <div className="report-hint-bubble">{hintMsg}</div>
+                  )}
                 </div>
                 <div className="report-stats">
                     <span className="report-stat">理智值：{report.sanity}</span>
