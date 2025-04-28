@@ -18,6 +18,7 @@ import { resultA, resultB, resultC } from '../data/meetingDialog/resultsCommon';
 import { resultB1, resultB2, resultB3, resultB4 } from '../data/meetingDialog/resultsB';
 import { resultC1, resultC2, resultC3, resultC4 } from '../data/meetingDialog/resultsC';
 import { resultD } from '../data/meetingDialog/resultsD';
+import resultHangup from '../data/meetingDialog/resultHangup';
 
 export const meetingScriptsMap = {
   opening: meetingDialogOpening,
@@ -43,5 +44,6 @@ export const meetingScriptsMap = {
   resultC3,
   resultC4,
   resultD,
+  resultHangup,
   fish: 100, // Add fish: 100 for the report card page
 };

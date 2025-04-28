@@ -218,6 +218,21 @@
   text-align: center;
   max-width: 30rem;
 }
+.camera-broken-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 1rem;
+  gap: 0.3rem;
+  padding: 0.2rem 0;
+}
+.camera-broken-text {
+  font-size: 1rem;
+  color: #888;
+  margin-top: 0.2rem;
+}
 @media (max-width: 600px) {
     .meeting-grid {
         width: 80vw;

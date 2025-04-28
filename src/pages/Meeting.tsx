@@ -4,19 +4,22 @@ import supervisor from '@/assets/images/meeting_supervisor_1.png';
 import female from '@/assets/images/meeting_coworker_female_1.png';
 import male from '@/assets/images/meeting_coworker_male_1.png';
 import '@/assets/styles/Meeting.css';
-import { FaMicrophone, FaPhoneSlash, FaVideo, FaExclamationTriangle } from 'react-icons/fa';
+import { FaMicrophone, FaMicrophoneSlash, FaPhoneSlash, FaVideo, FaExclamationTriangle } from 'react-icons/fa';
 import { meetingScriptsMap, answerOptions1, answerOptionsA, answerOptionsB, answerOptionsC } from './meetingDialog';
+import resultHangup from '../data/meetingDialog/resultHangup';
+import { CameraBrokenIcon } from '../components/CameraBrokenIcon';
 
 const avatarMap: Record<string, string> = {
   strawberry,
   boss: supervisor,
-  coworkerA: male,
-  coworkerB: female,
+  coworkerA: female,
+  coworkerB: male,
 };
 
 const Meeting: React.FC = () => {
     const [currentScriptKey, setCurrentScriptKey] = useState('opening');
-    const currentScript = meetingScriptsMap[currentScriptKey];
+    const meetingScriptsMapExt = { ...meetingScriptsMap, resultHangup };
+    const currentScript = meetingScriptsMapExt[currentScriptKey];
     const [dialog, setDialog] = useState<{speaker?: string, text: string}[]>([]);
     const [showEndCall, setShowEndCall] = useState(false);
     const [systemMsg, setSystemMsg] = useState<string | null>(null);
@@ -27,6 +30,9 @@ const Meeting: React.FC = () => {
         return [];
       }
     });
+    const [micOn, setMicOn] = useState(false);
+    const [dialogIndex, setDialogIndex] = useState(0);
+    const [showCameraBack, setShowCameraBack] = useState(false);
 
     useEffect(() => {
         if (!currentScript.length) return;
@@ -36,7 +42,7 @@ const Meeting: React.FC = () => {
         setDialog([currentScript[i]]);
         const interval = setInterval(() => {
             if (i < currentScript.length - 1) {
-                setDialog(prev => [...prev, currentScript[i]]);
+                setDialog(prev => [...prev, currentScript[i + 1]]);
                 i++;
             } else {
                 clearInterval(interval);
@@ -52,11 +58,15 @@ const Meeting: React.FC = () => {
         return () => clearInterval(interval);
     }, [currentScript, currentScriptKey]);
 
+    useEffect(() => {
+      setDialogIndex(dialog.length - 1);
+    }, [dialog]);
+
     // 結局對話逐行顯示動畫
     useEffect(() => {
-      // 只對 resultA~D 結局做處理
-      if (/^result[A-D][1-4]?$/.test(currentScriptKey)) {
-        const result = meetingScriptsMap[currentScriptKey];
+      // 只對 resultA~D 以及 resultHangup 結局做處理
+      if (/^result([A-D][1-4]?|Hangup)$/.test(currentScriptKey)) {
+        const result = meetingScriptsMapExt[currentScriptKey];
         if (result && result.dialog) {
           let i = 0;
           setDialog([result.dialog[0]]);
@@ -75,7 +85,8 @@ const Meeting: React.FC = () => {
 
     // 結束通話提示與自動跳轉
     useEffect(() => {
-      if (currentScriptKey === 'resultD' && dialog.length === 2) {
+      // resultD 或 resultHangup 結局都要自動跳轉
+      if ((currentScriptKey === 'resultD' || currentScriptKey === 'resultHangup') && dialog.length === 2) {
         setTimeout(() => setShowEndCall(true), 2000);
       }
     }, [currentScriptKey, dialog]);
@@ -96,9 +107,9 @@ const Meeting: React.FC = () => {
     // 當進入結局腳本時，解析內容並儲存到 localStorage
     useEffect(() => {
       // 只對 resultA~D 結局做處理
-      if (/^result[A-D][1-4]?$/.test(currentScriptKey)) {
+      if (/^result([A-D][1-4]?|Hangup)$/.test(currentScriptKey)) {
         // 取得結局物件
-        const result = meetingScriptsMap[currentScriptKey];
+        const result = meetingScriptsMapExt[currentScriptKey];
         // 依新結構解析 meta
         if (result) {
           // 系統提示
@@ -130,12 +141,36 @@ const Meeting: React.FC = () => {
       }
     }, [currentScriptKey]);
 
+    // 掛斷會議
+    const handleHangup = () => {
+      if (window.confirm('確定要掛斷會議嗎？')) {
+        // 進入掛斷腳本
+        setCurrentScriptKey('resultHangup');
+      }
+    };
+
+    useEffect(() => {
+      if (currentScriptKey === 'opening2' &&
+          dialog[dialogIndex - 1]?.speaker === 'coworkerB' &&
+          dialog[dialogIndex - 1]?.text.includes('鏡頭壞掉')) {
+        const timer = setTimeout(() => setShowCameraBack(true), 1500);
+        return () => clearTimeout(timer);
+      } else {
+        setShowCameraBack(false);
+      }
+    }, [currentScriptKey, dialogIndex]);
+
     const isAnswerOption = currentScript === answerOptions1 || currentScript === answerOptionsA || currentScript === answerOptionsB || currentScript === answerOptionsC;
 
     // 渲染對話內容時，僅渲染動畫累積的 dialog
     const displayDialog = isAnswerOption
       ? []
       : dialog;
+
+    const showCameraBroken = (
+      (currentScriptKey === 'opening' && dialog[dialogIndex]?.speaker === 'coworkerB' && dialog[dialogIndex]?.text.includes('鏡頭壞掉')) ||
+      (currentScriptKey === 'opening2' && !showCameraBack)
+    );
 
     return (
         <div className="meeting-container">
@@ -151,7 +186,9 @@ const Meeting: React.FC = () => {
                 <div className="meeting-cell"><img src={strawberry} alt="主角草莓" className="meeting-avatar" /></div>
                 <div className="meeting-cell"><img src={female} alt="女同事" className="meeting-avatar" /></div>
                 <div className="meeting-cell"><img src={supervisor} alt="主管" className="meeting-avatar" /></div>
-                <div className="meeting-cell"><img src={male} alt="男同事" className="meeting-avatar" /></div>
+                <div className="meeting-cell">
+                  {showCameraBroken ? <CameraBrokenIcon /> : <img src={male} alt="男同事" className="meeting-avatar" />}
+                </div>
             </div>
             <div className="meeting-dialog">
                 <div className="meeting-dialog-box">
@@ -167,7 +204,15 @@ const Meeting: React.FC = () => {
                             <button
                               className="meeting-dialog-text answer-option-btn"
                               key={idx}
-                              onClick={() => handleOptionSelect(idx)}
+                              onClick={() => {
+                                const isOptionD = opt.next === 'resultD';
+                                if (!micOn && !isOptionD) {
+                                  setSystemMsg('發言前要開啟麥克風');
+                                  setTimeout(() => setSystemMsg(null), 2000);
+                                  return;
+                                }
+                                handleOptionSelect(idx);
+                              }}
                             >
                               <span className="dialog-avatar-wrap">
                                 <img src={avatarMap[opt.speaker]} alt={opt.speaker} className="dialog-avatar" />
@@ -190,9 +235,20 @@ const Meeting: React.FC = () => {
                 </div>
             </div>
             <div className="meeting-actions">
-                <button className="meeting-action-btn"><FaMicrophone /></button>
-                <button className="meeting-action-btn meeting-action-hangup"><FaPhoneSlash /></button>
-                <button className="meeting-action-btn"><FaVideo /></button>
+                <button
+                  className={`meeting-action-btn${micOn ? '' : ' muted'}`}
+                  onClick={() => setMicOn(m => !m)}
+                  aria-label={micOn ? '關閉麥克風' : '開啟麥克風'}
+                >
+                  {micOn ? <FaMicrophone /> : <FaMicrophoneSlash />}
+                </button>
+                <button className="meeting-action-btn meeting-action-hangup" onClick={handleHangup}><FaPhoneSlash /></button>
+                <button className="meeting-action-btn" onClick={() => {
+                  setSystemMsg('你逃不掉的，鏡頭永遠打開！');
+                  setTimeout(() => setSystemMsg(null), 2000);
+                }}>
+                  <FaVideo />
+                </button>
             </div>
         </div>
     );

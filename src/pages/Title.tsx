@@ -1,6 +1,6 @@
 import React from 'react';
 import '@/assets/styles/Title.css';
-import title_1 from '@/assets/images/titles/title_1.png';
+import title_1 from '@/assets/images/titles/1.png';
 import Container from '../components/Container';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
