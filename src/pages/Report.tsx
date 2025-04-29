@@ -104,7 +104,16 @@ const Report: React.FC = () => {
     }, []);
 
     if (!report) {
-      return <div style={{textAlign:'center',marginTop:'4rem',fontSize:'1.2rem'}}>載入中...</div>;
+      return (
+        <Container>
+          <Card type="report" title="摸魚報告卡">
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'30vh'}}>
+              <span style={{fontSize:'1.2rem',color:'#888'}}>暫無資料</span>
+            </div>
+          </Card>
+          <Footer />
+        </Container>
+      );
     }
 
     const reportImg = titleImgMap[report.title];
