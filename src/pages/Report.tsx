@@ -65,7 +65,7 @@ const Report: React.FC = () => {
       // 顯示隨機提示
       setHintMsg(hintList[Math.floor(Math.random()*hintList.length)]);
       setShowHint(true);
-      setTimeout(() => setShowHint(false), 2000);
+      setTimeout(() => setShowHint(false), 2500);
     };
 
     useEffect(() => {

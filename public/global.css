@@ -61,7 +61,6 @@ html, body, #root, * {
   background: #c76542;
   border-radius: 1.2rem;
   padding: 0.6rem 1.4rem;
-  box-shadow: 0 0.08rem 0.18rem #e5c9b6;
   display: inline-block;
   border: none;
 }

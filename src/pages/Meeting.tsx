@@ -233,7 +233,7 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn }) => {
     useEffect(() => {
       const handlePopState = (e: PopStateEvent) => {
         window.history.pushState(null, '', window.location.href);
-        alert('會議進行中，不能回上一頁！');
+        alert('會議進行中，想跑去哪裡？');
       };
       window.history.pushState(null, '', window.location.href);
       window.addEventListener('popstate', handlePopState);
