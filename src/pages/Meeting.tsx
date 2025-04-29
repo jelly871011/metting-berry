@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import strawberry from '@/assets/images/meeting_strawberry_1.png';
-import supervisor from '@/assets/images/meeting_supervisor_1.png';
-import female from '@/assets/images/meeting_coworker_female_1.png';
-import male from '@/assets/images/meeting_coworker_male_1.png';
+import strawberry1 from '@/assets/images/meeting/1.png';
+import strawberry2 from '@/assets/images/meeting/2.png';
+import strawberry3 from '@/assets/images/meeting/3.png';
+import strawberry4 from '@/assets/images/meeting/4.png';
+import strawberry5 from '@/assets/images/meeting/5.png';
+import supervisor from '@/assets/images/meeting/supervisor_1.png';
+import female from '@/assets/images/meeting/coworker_female_1.png';
+import male from '@/assets/images/meeting/coworker_male_1.png';
 import '@/assets/styles/Meeting.css';
-import { FaMicrophone, FaMicrophoneSlash, FaPhoneSlash, FaVideo, FaExclamationTriangle } from 'react-icons/fa';
+import { FaMicrophone, FaMicrophoneSlash, FaPhoneSlash, FaVideo } from 'react-icons/fa';
 import { meetingScriptsMap, answerOptions1, answerOptionsA, answerOptionsB, answerOptionsC } from './meetingDialog';
 import resultHangup from '../data/meetingDialog/resultHangup';
 import { CameraBrokenIcon } from '../components/CameraBrokenIcon';
 
 const avatarMap: Record<string, string> = {
-  strawberry,
+  strawberry: strawberry5,
   boss: supervisor,
   coworkerA: female,
   coworkerB: male,
 };
+
+const strawberryFaces = [strawberry1, strawberry2, strawberry3, strawberry4, strawberry5];
 
 function weightedRandom(min: number, max: number, weights: number[]) {
   const steps = weights.length - 1;
@@ -82,6 +88,7 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn }) => {
     const [micOn, setMicOn] = useState(false);
     const [dialogIndex, setDialogIndex] = useState(0);
     const [showCameraBack, setShowCameraBack] = useState(false);
+    const [faceIdx, setFaceIdx] = useState(0);
 
     useEffect(() => {
         if (!currentScript.length) return;
@@ -210,6 +217,13 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn }) => {
       }
     }, [currentScriptKey, dialogIndex]);
 
+    useEffect(() => {
+      const timer = setInterval(() => {
+        setFaceIdx(idx => (idx + 1) % strawberryFaces.length);
+      }, 1800); // 每 1.8 秒換一張
+      return () => clearInterval(timer);
+    }, []);
+
     const isAnswerOption = currentScript === answerOptions1 || currentScript === answerOptionsA || currentScript === answerOptionsB || currentScript === answerOptionsC;
 
     const isBracketOption = (text: string) => /^（.*）$/.test(text.trim());
@@ -253,7 +267,14 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn }) => {
             </div>
           )}
             <div className="meeting-grid">
-                <div className="meeting-cell"><img src={strawberry} alt="主角草莓" className="meeting-avatar" /></div>
+                <div className="meeting-cell">
+                  <img
+                    src={strawberryFaces[faceIdx]}
+                    alt="主角草莓"
+                    className="meeting-avatar"
+                    style={{ cursor: 'pointer' }}
+                  />
+                </div>
                 <div className="meeting-cell"><img src={female} alt="女同事" className="meeting-avatar" /></div>
                 <div className="meeting-cell"><img src={supervisor} alt="主管" className="meeting-avatar" /></div>
                 <div className="meeting-cell">
