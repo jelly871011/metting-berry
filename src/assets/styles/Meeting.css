@@ -233,61 +233,116 @@
   color: #888;
   margin-top: 0.2rem;
 }
+.event-popup {
+  position: fixed;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+  background: #234342ee;
+  border: 2px solid #234342;
+  border-radius: 1.2rem;
+  box-shadow: 0 0 1.2rem #23434244;
+  z-index: 2500;
+  padding: 2rem 2.5rem;
+  min-width: 15rem;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #fff9e6;
+  animation: fadeInCenter 0.3s;
+}
+.event-popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+.event-popup-btn {
+  margin-top: 0.5rem;
+  background: #a3c8bd;
+  color: #234342;
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.7rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-shadow: 0 0.15rem 0.55rem #23434222;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: background 0.2s, transform 0.15s;
+}
+.event-popup-btn:hover {
+  background: #a3c8bd;
+  color: #fff9e6;
+  transform: scale(1.07);
+}
+/* RWD */
 @media (max-width: 600px) {
-    .meeting-grid {
-        width: 80vw;
-        max-width: 80vw;
-        height: calc(80vw * 0.8);
-        gap: 0.7rem;
-        padding: 0.7rem;
-        margin: 2rem 1.2rem 1rem 1.2rem;
-    }
-    .meeting-dialog {
-        width: 85vw;
-        max-width: 85vw;
-        padding-left: 0.7rem;
-        padding-right: 0.7rem;
-    }
+  .meeting-grid {
+    width: 80vw;
+    max-width: 80vw;
+    height: calc(80vw * 0.8);
+    gap: 0.7rem;
+    padding: 0.7rem;
+    margin: 2rem 1.2rem 1rem 1.2rem;
+  }
+  .meeting-dialog {
+    width: 85vw;
+    max-width: 85vw;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+  }
 
-    .meeting-dialog-box {
-        padding: 0.3rem 1rem;
-        height: 13rem;
-    }
+  .meeting-dialog-box {
+    padding: 0.3rem 1rem;
+    height: 13rem;
+  }
 
-    .meeting-dialog-text {
-        font-size: 0.9rem;
-    }
+  .meeting-dialog-text {
+    font-size: 0.9rem;
+  }
 
-    .meeting-actions {
-        margin: 0;
-    }
-    .boss-bubble-center {
-        font-size: 1rem;
-        min-width: 7rem;
-        max-width: 90vw;
-        padding: 0.6rem 0.9rem;
-    }
-    .system-error-toast {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        align-self: center;
-        max-width: 90vw;
-        width: 85vw;
-        padding: 0.7rem 1rem;
-        font-size: 0.9rem;
-        word-break: break-all;
-        white-space: pre-line;
-    }
-    .system-endcall-toast {
-        max-width: 90vw;
-        width: 85vw;
-        font-size: 1rem;
-        padding: 0.8rem 1rem;
-    }
+  .meeting-actions {
+    margin: 0;
+  }
+  .boss-bubble-center {
+    font-size: 1rem;
+    min-width: 7rem;
+    max-width: 90vw;
+    padding: 0.6rem 0.9rem;
+  }
+  .system-error-toast {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    max-width: 90vw;
+    width: 85vw;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    word-break: break-all;
+    white-space: pre-line;
+  }
+  .system-endcall-toast {
+    max-width: 90vw;
+    width: 85vw;
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+  }
+  .event-popup {
+    min-width: 15rem;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+  .event-popup-btn {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+  .event-popup-content {
+    gap: 0.5rem;
+  }
 }
 
 @keyframes fadeInCenter {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  0% { opacity: 0; transform: scale(0.93) translate(-50%, -50%); }
+  100% { opacity: 1; transform: scale(1) translate(-50%, -50%); }
 }

@@ -94,6 +94,63 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn, funOn, ghostOn }) => {
     const [dialogIndex, setDialogIndex] = useState(0);
     const [showCameraBack, setShowCameraBack] = useState(false);
     const [faceIdx, setFaceIdx] = useState(0);
+    // 隨機事件狀態
+    const [eventActive, setEventActive] = useState(false);
+    const [eventMsg, setEventMsg] = useState('');
+    const [eventBlocking, setEventBlocking] = useState(false);
+    const [eventTriggered, setEventTriggered] = useState(false); // 新增：只觸發一次
+    // 多種有趣隨機事件
+    const eventList = [
+      { msg: '主管突然點名，快點擊「假裝很忙」！', btn: '假裝很忙' },
+      { msg: '同事傳訊息來問八卦，快回「哈哈」！', btn: '哈哈' },
+      { msg: '螢幕突然黑掉，快點「重開螢幕」！', btn: '重開螢幕' },
+      { msg: '發現主管在偷滑手機，快點「假裝筆記」！', btn: '假裝筆記' },
+      { msg: '收到神秘會議邀請，快點「裝作沒看到」！', btn: '裝作沒看到' },
+      { msg: '同事請你幫忙回應，快點「已回！」', btn: '已回！' },
+      { msg: 'PPT 突然壞掉，快點「Ctrl+Z」！', btn: 'Ctrl+Z' },
+    ];
+    const [currentEvent, setCurrentEvent] = useState<{msg:string,btn:string}|null>(null);
+    // 會議過程只隨機觸發一次事件
+    useEffect(() => {
+      if (eventTriggered) return;
+      const timer = setTimeout(() => {
+        const e = eventList[Math.floor(Math.random()*eventList.length)];
+        setCurrentEvent(e);
+        setEventMsg(e.msg);
+        setEventActive(true);
+        setEventBlocking(true);
+        setEventTriggered(true);
+        setTimeout(() => {
+          setEventActive(false);
+          setEventBlocking(false);
+        }, 2200 + Math.random()*600); // 顯示1.2~1.8秒
+      }, 1000 + Math.random() * 2000); // 9~21秒隨機觸發
+      return () => clearTimeout(timer);
+    }, [eventTriggered]);
+    // 處理事件成功
+    const [sanity, setSanity] = useState(0);
+    const [busy, setBusy] = useState(0);
+    const [stress, setStress] = useState(0);
+    const handleEventSuccess = () => {
+      setEventActive(false);
+      setEventBlocking(false);
+      // 隨機只加一種屬性
+      const delta = Math.floor(Math.random() * 6) + 5; // 5~10
+      const typeIdx = Math.floor(Math.random() * 3);
+      let msg = '';
+      if (typeIdx === 0) {
+        setSanity(v => v + delta);
+        msg = `反應超快！理智+${delta}`;
+      } else if (typeIdx === 1) {
+        setBusy(v => v + delta);
+        msg = `反應超快！裝忙+${delta}`;
+      } else {
+        setStress(v => v + delta);
+        msg = `反應超快！壓力+${delta}`;
+      }
+      setSystemMsg(msg);
+      setTimeout(() => setSystemMsg(null), 1500);
+    };
 
     useEffect(() => {
         if (!currentScript.length) return;
@@ -183,7 +240,6 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn, funOn, ghostOn }) => {
           const stats = generateMeetingStats(result.title);
           localStorage.setItem('lastReport', JSON.stringify({
             title: result.title || '',
-            busy: stats.busy,
             sanity: stats.sanity,
             stress: stats.stress,
             skills: result.skills || [],
@@ -243,8 +299,19 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn, funOn, ghostOn }) => {
       (currentScriptKey === 'opening2' && !showCameraBack)
     );
 
+    // 報告卡計算總分
+    const calcTotalScore = () => {
+      // 可依實際規則調整
+      return sanity + busy - stress;
+    };
+
+    // 報告卡跳轉時帶入分數
     const goToReport = () => {
       sessionStorage.setItem('fromMeeting', '1');
+      sessionStorage.setItem('meetingSanity', String(sanity));
+      sessionStorage.setItem('meetingBusy', String(busy));
+      sessionStorage.setItem('meetingStress', String(stress));
+      sessionStorage.setItem('meetingTotalScore', String(calcTotalScore()));
       window.location.href = '/report';
     };
 
@@ -305,8 +372,8 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn, funOn, ghostOn }) => {
                               className="meeting-dialog-text answer-option-btn"
                               key={idx}
                               onClick={() => {
+                                if (eventBlocking) return;
                                 const isOptionD = opt.next === 'resultD';
-                                // 新增：如果是（）開頭結尾的選項，不需檢查 micOn
                                 if (!micOn && !isOptionD && !isBracketOption(opt.text)) {
                                   setSystemMsg('發言前要開啟麥克風');
                                   setTimeout(() => setSystemMsg(null), 2000);
@@ -314,6 +381,7 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn, funOn, ghostOn }) => {
                                 }
                                 handleOptionSelect(idx);
                               }}
+                              disabled={eventBlocking}
                             >
                               <span className="dialog-avatar-wrap">
                                 <img src={avatarMap[opt.speaker]} alt={opt.speaker} className="dialog-avatar" />
@@ -351,6 +419,14 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn, funOn, ghostOn }) => {
                   <FaVideo />
                 </button>
             </div>
+            {eventActive && currentEvent && (
+              <div className="event-popup">
+                <div className="event-popup-content">
+                  <span>{currentEvent.msg}</span>
+                  <button className="event-popup-btn" onClick={handleEventSuccess}>{currentEvent.btn}</button>
+                </div>
+              </div>
+            )}
         </div>
     );
 };
