@@ -4,9 +4,12 @@ import strawberry2 from '@/assets/images/meeting/2.png';
 import strawberry3 from '@/assets/images/meeting/3.png';
 import strawberry4 from '@/assets/images/meeting/4.png';
 import strawberry5 from '@/assets/images/meeting/5.png';
+import strawberryGhost from '@/assets/images/strawberry_ghost.png';
 import supervisor from '@/assets/images/meeting/supervisor_1.png';
 import female from '@/assets/images/meeting/coworker_female_1.png';
+import female2 from '@/assets/images/meeting/coworker_female_2.png';
 import male from '@/assets/images/meeting/coworker_male_1.png';
+import male2 from '@/assets/images/meeting/coworker_male_2.png';
 import '@/assets/styles/Meeting.css';
 import { FaMicrophone, FaMicrophoneSlash, FaPhoneSlash, FaVideo } from 'react-icons/fa';
 import { meetingScriptsMap, answerOptions1, answerOptionsA, answerOptionsB, answerOptionsC } from './meetingDialog';
@@ -69,9 +72,11 @@ function generateMeetingStats(title?: string) {
 
 interface MeetingProps {
   hintOn: boolean;
+  funOn: boolean;
+  ghostOn: boolean;
 }
 
-const Meeting: React.FC<MeetingProps> = ({ hintOn }) => {
+const Meeting: React.FC<MeetingProps> = ({ hintOn, funOn, ghostOn }) => {
     const [currentScriptKey, setCurrentScriptKey] = useState('opening');
     const meetingScriptsMapExt = { ...meetingScriptsMap, resultHangup };
     const currentScript = meetingScriptsMapExt[currentScriptKey];
@@ -256,6 +261,11 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn }) => {
       };
     }, []);
 
+    const coworkerImg = funOn ? female2 : female;
+    const coworkerMaleImg = funOn ? male2 : male;
+
+    const mainStrawberry = ghostOn ? strawberryGhost : strawberryFaces[faceIdx];
+
     return (
         <div className="meeting-container">
           {hintOn && systemMsg && (
@@ -269,16 +279,15 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn }) => {
             <div className="meeting-grid">
                 <div className="meeting-cell">
                   <img
-                    src={strawberryFaces[faceIdx]}
+                    src={mainStrawberry}
                     alt="主角草莓"
                     className="meeting-avatar"
-                    style={{ cursor: 'pointer' }}
                   />
                 </div>
-                <div className="meeting-cell"><img src={female} alt="女同事" className="meeting-avatar" /></div>
+                <div className="meeting-cell"><img src={coworkerImg} alt="女同事" className="meeting-avatar" /></div>
                 <div className="meeting-cell"><img src={supervisor} alt="主管" className="meeting-avatar" /></div>
                 <div className="meeting-cell">
-                  {showCameraBroken ? <CameraBrokenIcon /> : <img src={male} alt="男同事" className="meeting-avatar" />}
+                  {showCameraBroken ? <CameraBrokenIcon /> : <img src={coworkerMaleImg} alt="男同事" className="meeting-avatar" />}
                 </div>
             </div>
             <div className="meeting-dialog">

@@ -9,15 +9,17 @@ import Setting from './pages/Setting';
 
 const App: React.FC = () => {
 	const [hintOn, setHintOn] = useState(true);
+	const [funOn, setFunOn] = useState(false);
+  const [ghostOn, setGhostOn] = useState<boolean>(false);
 	return (
 		<BrowserRouter>
 			<Routes>
 			    <Route path="/" element={<Loading />} />
 				<Route path="/home" element={<Home />} />
-				<Route path="/meeting" element={<Meeting hintOn={hintOn} />} />
+				<Route path="/meeting" element={<Meeting hintOn={hintOn} funOn={funOn} ghostOn={ghostOn} />} />
 				<Route path="/report" element={<Report />} />
 				<Route path="/leaderboard" element={<Leaderboard />} />
-				<Route path="/setting" element={<Setting hintOn={hintOn} setHintOn={setHintOn} />} />
+				<Route path="/setting" element={<Setting hintOn={hintOn} setHintOn={setHintOn} funOn={funOn} setFunOn={setFunOn} ghostOn={ghostOn} setGhostOn={setGhostOn} />} />
 			</Routes>
 		</BrowserRouter>
 	);

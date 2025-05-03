@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '@/assets/styles/Setting.css';
-import { FaMusic, FaVolumeUp, FaCommentDots, FaBookOpen, FaEnvelope, FaInfoCircle } from 'react-icons/fa';
+import { FaCommentDots, FaBookOpen, FaEnvelope, FaInfoCircle, FaRocket, FaGhost } from 'react-icons/fa';
 import Container from '../components/Container';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
@@ -9,12 +9,14 @@ import { VERSION } from '../version';
 // props: 由父層傳入 hintOn, setHintOn
 interface SettingProps {
   hintOn: boolean;
-  setHintOn: React.Dispatch<React.SetStateAction<boolean>>;
+  setHintOn: (v: boolean) => void;
+  funOn: boolean;
+  setFunOn: (v: boolean) => void;
+  ghostOn: boolean;
+  setGhostOn: (v: boolean) => void;
 }
 
-const Setting: React.FC<SettingProps> = ({ hintOn, setHintOn }) => {
-    const [musicOn, setMusicOn] = useState(true);
-    const [soundOn, setSoundOn] = useState(true);
+const Setting: React.FC<SettingProps> = ({ hintOn, setHintOn, funOn, setFunOn, ghostOn, setGhostOn }) => {
     const [lang, setLang] = useState<'zh' | 'en'>('zh');
 
     // 兩句話輪流顯示
@@ -33,34 +35,20 @@ const Setting: React.FC<SettingProps> = ({ hintOn, setHintOn }) => {
     // 切換提示開關時，只用 props 的 setHintOn
     const onHintToggle = () => setHintOn(v => !v);
 
+    // 有趣開關事件
+    const onFunToggle = () => {
+      setFunOn(v => !v);
+      alert(funOn ? '你關閉了「快樂模式」，會議又變無聊了...' : '快樂模式啟動！草莓開始跳舞 🍓💃');
+    };
+    const onGhostToggle = () => {
+      setGhostOn(v => !v);
+      alert(ghostOn ? '幽靈模式解除，大家都看得到你了！' : '幽靈模式啟動，主管再也找不到你 👻');
+    };
+
     return (
         <Container>
             <Card type="setting" title="設定">
                 <div className="setting-list">
-                    <div className="setting-list-item">
-                        <FaMusic className="setting-icon" />
-                        <span>背景音樂</span>
-                        <div className="setting-switch">
-                            <div
-                                className={`setting-square-toggle${musicOn ? ' selected' : ''}`}
-                                onClick={() => setMusicOn(!musicOn)}
-                            >
-                                {musicOn ? '開' : '關'}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="setting-list-item">
-                        <FaVolumeUp className="setting-icon" />
-                        <span>音效</span>
-                        <div className="setting-switch">
-                            <div
-                                className={`setting-square-toggle${soundOn ? ' selected' : ''}`}
-                                onClick={() => setSoundOn(!soundOn)}
-                            >
-                                {soundOn ? '開' : '關'}
-                            </div>
-                        </div>
-                    </div>
                     <div className="setting-list-item">
                         <FaCommentDots className="setting-icon" />
                         <span>提示</span>
@@ -82,7 +70,31 @@ const Setting: React.FC<SettingProps> = ({ hintOn, setHintOn }) => {
                                 style={{ opacity: 1, cursor: 'pointer' }}
                                 onClick={() => alert('要切語言請抖內，感恩！')}
                             >
-                                {lang === 'zh' ? '中文' : 'EN'}
+                                {lang === 'zh' ? '中' : 'EN'}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="setting-list-item">
+                        <FaRocket className="setting-icon" />
+                        <span>快樂模式</span>
+                        <div className="setting-switch">
+                            <div
+                                className={`setting-square-toggle${funOn ? ' selected' : ''}`}
+                                onClick={onFunToggle}
+                            >
+                                {funOn ? '開' : '關'}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="setting-list-item">
+                        <FaGhost className="setting-icon" />
+                        <span>幽靈模式</span>
+                        <div className="setting-switch">
+                            <div
+                                className={`setting-square-toggle${ghostOn ? ' selected' : ''}`}
+                                onClick={onGhostToggle}
+                            >
+                                {ghostOn ? '開' : '關'}
                             </div>
                         </div>
                     </div>
