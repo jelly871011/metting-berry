@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import strawberry1 from '@/assets/images/meeting/1.png';
 import strawberry2 from '@/assets/images/meeting/2.png';
 import strawberry3 from '@/assets/images/meeting/3.png';
 import strawberry4 from '@/assets/images/meeting/4.png';
 import strawberry5 from '@/assets/images/meeting/5.png';
+import strawberry6 from '@/assets/images/meeting/6.png';
 import strawberryGhost from '@/assets/images/strawberry_ghost.png';
 import supervisor from '@/assets/images/meeting/supervisor_1.png';
 import female from '@/assets/images/meeting/coworker_female_1.png';
@@ -145,36 +146,52 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn, funOn, ghostOn }) => {
         setBusy(v => v + delta);
         msg = `反應超快！裝忙+${delta}`;
       } else {
-        setStress(v => v + delta);
-        msg = `反應超快！壓力+${delta}`;
+        setStress(v => v - delta);
+        msg = `反應超快！壓力-${delta}`;
       }
       setSystemMsg(msg);
       setTimeout(() => setSystemMsg(null), 1500);
     };
 
+    const dialogIndexRef = useRef(0);
+    const [dialogStep, setDialogStep] = useState(0);
+
     useEffect(() => {
-        if (!currentScript.length) return;
-        // 若是選項，不自動跑動畫
-        if (currentScript === answerOptions1 || currentScript === answerOptionsA || currentScript === answerOptionsB || currentScript === answerOptionsC) return;
-        let i = 0;
-        setDialog([currentScript[i]]);
-        const interval = setInterval(() => {
-            if (i < currentScript.length - 1) {
-                setDialog(prev => [...prev, currentScript[i + 1]]);
-                i++;
-            } else {
-                clearInterval(interval);
-                setTimeout(() => {
-                    // 劇情流程控制
-                    if (currentScriptKey === 'opening') setCurrentScriptKey('opening2');
-                    else if (currentScriptKey === 'opening2') setCurrentScriptKey('boss');
-                    else if (currentScriptKey === 'boss') setCurrentScriptKey('answer1');
-                    // resultA~D 結束後不再自動跳轉
-                }, 1000);
-            }
-        }, 500);
-        return () => clearInterval(interval);
+      if (!currentScript.length) return;
+      if (
+        currentScript === answerOptions1 ||
+        currentScript === answerOptionsA ||
+        currentScript === answerOptionsB ||
+        currentScript === answerOptionsC
+      ) return;
+      setDialog([currentScript[0]]);
+      setDialogStep(0);
     }, [currentScript, currentScriptKey]);
+
+    useEffect(() => {
+      if (!currentScript.length) return;
+      if (
+        currentScript === answerOptions1 ||
+        currentScript === answerOptionsA ||
+        currentScript === answerOptionsB ||
+        currentScript === answerOptionsC
+      ) return;
+      if (eventActive) return; // 事件彈窗時暫停
+      if (dialogStep >= currentScript.length - 1) {
+        // 結束後自動切腳本
+        const timeoutId = setTimeout(() => {
+          if (currentScriptKey === 'opening') setCurrentScriptKey('opening2');
+          else if (currentScriptKey === 'opening2') setCurrentScriptKey('boss');
+          else if (currentScriptKey === 'boss') setCurrentScriptKey('answer1');
+        }, 1000);
+        return () => clearTimeout(timeoutId);
+      }
+      const timeoutId = setTimeout(() => {
+        setDialog(prev => [...prev, currentScript[dialogStep + 1]]);
+        setDialogStep(step => step + 1);
+      }, 500);
+      return () => clearTimeout(timeoutId);
+    }, [dialogStep, eventActive, currentScript, currentScriptKey]);
 
     useEffect(() => {
       setDialogIndex(dialog.length - 1);
@@ -241,6 +258,7 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn, funOn, ghostOn }) => {
           localStorage.setItem('lastReport', JSON.stringify({
             title: result.title || '',
             sanity: stats.sanity,
+            busy: stats.busy,
             stress: stats.stress,
             skills: result.skills || [],
           }));
@@ -280,10 +298,10 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn, funOn, ghostOn }) => {
 
     useEffect(() => {
       const timer = setInterval(() => {
-        setFaceIdx(idx => (idx + 1) % strawberryFaces.length);
+        setFaceIdx(idx => (idx + 1) % (funOn ? 1 : strawberryFaces.length));
       }, 1800); // 每 1.8 秒換一張
       return () => clearInterval(timer);
-    }, []);
+    }, [funOn]);
 
     const isAnswerOption = currentScript === answerOptions1 || currentScript === answerOptionsA || currentScript === answerOptionsB || currentScript === answerOptionsC;
 
@@ -331,7 +349,7 @@ const Meeting: React.FC<MeetingProps> = ({ hintOn, funOn, ghostOn }) => {
     const coworkerImg = funOn ? female2 : female;
     const coworkerMaleImg = funOn ? male2 : male;
 
-    const mainStrawberry = ghostOn ? strawberryGhost : strawberryFaces[faceIdx];
+    const mainStrawberry = ghostOn ? strawberryGhost : (funOn ? strawberry6 : strawberryFaces[faceIdx]);
 
     return (
         <div className="meeting-container">

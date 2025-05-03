@@ -37,10 +37,20 @@ const Setting: React.FC<SettingProps> = ({ hintOn, setHintOn, funOn, setFunOn, g
 
     // 有趣開關事件
     const onFunToggle = () => {
+      if (ghostOn) {
+        alert('幽靈模式開啟中，請先關閉幽靈模式再啟用快樂模式！');
+        return;
+      }
       setFunOn(v => !v);
-      alert(funOn ? '你關閉了「快樂模式」，會議又變無聊了...' : '快樂模式啟動！草莓開始跳舞 🍓💃');
+      alert(funOn ? '你關閉了「快樂模式」，會議又變無聊了...' : '快樂模式啟動！你要笑著參與會議 🍓💃');
     };
+
+    // 幽靈模式開關事件
     const onGhostToggle = () => {
+      if (funOn) {
+        alert('快樂模式開啟中，請先關閉快樂模式再啟用幽靈模式！');
+        return;
+      }
       setGhostOn(v => !v);
       alert(ghostOn ? '幽靈模式解除，大家都看得到你了！' : '幽靈模式啟動，主管再也找不到你 👻');
     };
@@ -51,7 +61,7 @@ const Setting: React.FC<SettingProps> = ({ hintOn, setHintOn, funOn, setFunOn, g
                 <div className="setting-list">
                     <div className="setting-list-item">
                         <FaCommentDots className="setting-icon" />
-                        <span>提示</span>
+                        <span>系統提示</span>
                         <div className="setting-switch">
                             <div
                                 className={`setting-square-toggle${hintOn ? ' selected' : ''}`}
