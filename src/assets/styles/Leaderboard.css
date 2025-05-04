@@ -61,7 +61,7 @@
 }
 .ranking-list-item {
   display: grid;
-  grid-template-columns: 10% 28% 11% 40%;
+  grid-template-columns: 10% 28% 11% 41%;
   align-items: center;
   gap: 0.7rem;
   border-bottom: 1px solid #c9c9a7;
@@ -75,7 +75,7 @@
   border-bottom: none;
 }
 .ranking-index {
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
   color: #e67e22;
   text-align: center;
@@ -85,7 +85,7 @@
 }
 .ranking-player {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.9rem;
   justify-self: center;
   max-width: 7.5rem;
   min-width: 0;
@@ -122,7 +122,7 @@
     touch-action: pan-y;
   }
   .ranking-list-item {
-    grid-template-columns: 10% 33% 10% 40%;
+    grid-template-columns: 12% 31% 9% 48%;
     font-size: 1rem;
     min-height: 4.2rem;
     gap: 0.5rem;
@@ -130,9 +130,10 @@
     min-width: 0;
   }
   .ranking-index {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
   .ranking-player {
+    font-size: 0.8rem;
     max-width: 5.2rem;
     min-width: 0;
   }

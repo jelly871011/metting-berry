@@ -11,7 +11,7 @@ const Leaderboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
-      const q = query(collection(db, 'leaderboard'), orderBy('totalScore', 'desc'), limit(50));
+      const q = query(collection(db, 'leaderboard'), orderBy('totalScore', 'desc'), limit(100));
       const querySnapshot = await getDocs(q);
       setRecords(querySnapshot.docs.map(doc => doc.data()));
       setLoading(false);
@@ -49,7 +49,7 @@ const Leaderboard: React.FC = () => {
     <Container>
       <Card type="title" title="排行榜">
         <div className="ranking-list">
-          {records.slice(0, 30).map((rec, idx) => (
+          {records.slice(0, 100).map((rec, idx) => (
             <div className="ranking-list-item" key={rec.id || idx}>
               <span className="ranking-index">{idx + 1}</span>
               <span className="ranking-player" title={rec.playerName || '匿名莓'}>{rec.playerName || '匿名莓'}</span>
